@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="$t.lang">
+    <head>
+        <meta charset="UTF-8">
+        <title>Map</title>
+        <link rel="alternate" hreflang="x-default" href="https://minishoot-map.github.io">
+        <link rel="alternate" hreflang="en" href="https://minishoot-map.github.io">
+        <link rel="alternate" hreflang="ru" href="https://minishoot-map.github.io/ru">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+        <style>
+        .marker {
+            position: absolute;
+            & > * {
+                width: 10px;
+                height: 10px;
+                background: red;
+                transform: translate(-50%);
+            }
+        }
+        .bg {
+            --top: -375;
+            --left: -604;
+            --size: 577;
+
+            left: calc(var(--left) * 1px);
+            top: calc(var(--top) * 1px);
+            transform: scale(calc(var(--size) / 1000));
+        }
+        </style>
+        <script type="module" src="index.ts"></script>
+    </head>
+    <body>
+        <noscript>No javascript?</noscript>
+        <div style="padding: 30">
+            <div style="position: relative;">
+                <img src="./map.png" style="position: absolute;" class="bg">
+                <div id="root" style="position: relative; left: 1000px; top: 700px">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

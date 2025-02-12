@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev"
+  },
+	"dependencies": {
+		"vite": "^6.1.0"
+	}
+}
