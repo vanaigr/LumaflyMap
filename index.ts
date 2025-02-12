@@ -82,7 +82,7 @@ function refresh() {
             if(!lamps && (objs.lamps?.[path] || objs.chests?.[path])) continue
             if(!enemies && objs.enemies?.[path]) continue
             if(!beam && objs.beamMiners?.[path]) continue
-            if(!chandelier && (objs.chandelier?.[path] || objs.lampsOnWalls?.[path])) continue
+            if(!chandelier && (objs.chandeliers?.[path] || objs.lampsOnWalls?.[path])) continue
             if(!seer && (sceneName === seerScene && path === seerPath)) continue
 
             const obj = objsInWorld.positions[path]
