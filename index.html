@@ -30,6 +30,9 @@
             left: calc(var(--left) * 1px);
             top: calc(var(--top) * 1px);
             transform: scale(calc(var(--size) / 1000));
+
+          user-drag: none;
+          pointer-events: none;
         }
         .overlay {
             position: fixed;
@@ -59,38 +62,59 @@
             flex-direction: column;
             gap: 0.4rem;
         }
+        .cont {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 20rem;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        .map {
+            overflow: hidden;
+            display: grid;
+        }
         </style>
         <script type="module" src="index.ts"></script>
     </head>
     <body>
         <noscript>No javascript?</noscript>
-        Add file here or drag and drop: <input type='file' id="input">
-        <br>
-        <br>
-        <div style="display: flex; flex-direction: column">
-            <label>Show freed: <input type="checkbox" id="showFreed"></label>
-            <label>Show not freed: <input type="checkbox" checked="true" id="showRest"></label>
-            <span></span>
-            <label>Show lamps/chest: <input type="checkbox" checked="true" id="showLamps"></label>
-            <label>Show husk miners: <input type="checkbox" checked="true" id="showEnemies"></label>
-            <label>Show crystallized husks: <input type="checkbox" checked="true" id="showBeam"></label>
-            <label>Show chandelier: <input type="checkbox" checked="true" id="showChandelier"></label>
-            <label>Show Seer: <input type="checkbox" checked="true" id="showSeer"></label>
-        </div>
-        <br>
-        <br>
-        <div>
-            <div>Not on the map:</div>
-            <div id="rest">
-            </div>
-        </div>
-        <br>
-
-        <div style="padding: 30">
-            <div style="position: relative; transform: scale(0.7);">
-                <img src="./map.png" style="position: absolute;" class="bg">
-                <div id="root" style="position: relative; left: 1000px; top: 700px">
+        <div class='cont'>
+            <div class='map'>
+                <div id="mapCont" style="position: relative;">
+                    <div style="position: absolute; inset: 50%;">
+                        <div id="mapResize">
+                            <div style="transform: scale(0.7);">
+                                <img src="./map.png" style="position: absolute;" class="bg">
+                                <div id="root" style="position: relative; left: 1000px; top: 700px"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <div class='menu'>
+                Add file here or drag and drop: <input type='file' id="input">
+                <br>
+                <br>
+                <div style="display: flex; flex-direction: column">
+                    <label>Show freed: <input type="checkbox" id="showFreed"></label>
+                    <label>Show not freed: <input type="checkbox" checked="true" id="showRest"></label>
+                    <div>&nbsp;</div>
+                    <label>Show lamps/chest: <input type="checkbox" checked="true" id="showLamps"></label>
+                    <label>Show husk miners: <input type="checkbox" checked="true" id="showEnemies"></label>
+                    <label>Show crystallized husks: <input type="checkbox" checked="true" id="showBeam"></label>
+                    <label>Show chandelier: <input type="checkbox" checked="true" id="showChandelier"></label>
+                    <label>Show Seer: <input type="checkbox" checked="true" id="showSeer"></label>
+                </div>
+                <br>
+                <br>
+                <div>
+                    <div>Not on the map:</div>
+                    <div id="rest">
+                    </div>
+                </div>
+                <br>
             </div>
         </div>
 

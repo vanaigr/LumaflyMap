@@ -1,5 +1,27 @@
 import list from './list.json'
 import positions from './positions.json'
+import { setup } from './camera.js'
+
+setup({
+    canvas: window.mapCont,
+    camera: {
+        posX: 0,
+        posY: 0,
+        scale: 1000,
+    },
+    canvasSize: [1, 1],
+    sizes: { fontSize: 16, heightCssPx: 1000 },
+    requestRender() {
+        const c = this.camera
+        const r = window.mapResize
+        const rect = window.mapCont.getBoundingClientRect()
+        const height = rect.height
+        const scale = 0.5 * height / c.scale
+        const x = -c.posX * scale
+        const y = c.posY * scale
+        r.style.transform = `matrix(${scale}, 0, 0, ${scale}, ${x}, ${y})`
+    },
+})
 
 console.log(list, positions)
 
@@ -70,7 +92,7 @@ function refresh() {
                     const cont = document.createElement('details')
                     cont.classList.add('restScene')
                     const title = document.createElement('summary')
-                    title.append(document.createTextNode('Scene ' + sceneName))
+                    title.append(document.createTextNode(sceneName))
                     cont.append(title)
                     sceneRest = document.createElement('div')
                     cont.append(sceneRest)
@@ -156,4 +178,5 @@ async function loadFromListFiles(files) {
         currentItems[sk] = res
     }
     refresh()
+    console.log(currentItems)
 }

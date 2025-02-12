@@ -1,9 +1,9 @@
 {
-  "type": "module",
-  "scripts": {
-    "dev": "vite dev"
-  },
-	"dependencies": {
+    "type": "module",
+    "scripts": {
+        "dev": "vite dev"
+    },
+	"devDependencies": {
 		"vite": "^6.1.0"
 	}
 }
