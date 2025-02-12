@@ -64,9 +64,17 @@
             flex-direction: column;
             gap: 0.4rem;
         }
+        :root {
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+        body {
+            flex-grow: 1;
+            display: flex;
+        }
         .cont {
-            width: 100vw;
-            height: 100vh;
+            flex-grow: 1;
             display: grid;
             grid-template-columns: 1fr 20rem;
             gap: 1rem;
@@ -75,6 +83,12 @@
         .map {
             overflow: hidden;
             display: grid;
+        }
+        .menu {
+            min-height: 0;
+            max-height: 100%;
+            overflow: scroll;
+            padding: 0.2rem;
         }
         </style>
         <script type="module" src="index.ts"></script>

@@ -5,9 +5,9 @@ import { setup } from './camera.js'
 setup({
     canvas: window.mapCont,
     camera: {
-        posX: 0,
-        posY: 0,
-        scale: 1000,
+        posX: 800,
+        posY: -500,
+        scale: 500,
     },
     canvasSize: [1, 1],
     sizes: { fontSize: 16, heightCssPx: 1000 },
