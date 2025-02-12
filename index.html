@@ -31,17 +31,71 @@
             top: calc(var(--top) * 1px);
             transform: scale(calc(var(--size) / 1000));
         }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #00000060;
+            font-size: 7rem;
+            color: white;
+
+            visibility: hidden;
+            opacity: 0;
+        }
+        .restScene > div {
+            padding-top: 0.3rem;
+            padding-bottom: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        #rest {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
         </style>
         <script type="module" src="index.ts"></script>
     </head>
     <body>
         <noscript>No javascript?</noscript>
+        Add file here or drag and drop: <input type='file' id="input">
+        <br>
+        <br>
+        <div style="display: flex; flex-direction: column">
+            <label>Show freed: <input type="checkbox" id="showFreed"></label>
+            <label>Show not freed: <input type="checkbox" checked="true" id="showRest"></label>
+            <span></span>
+            <label>Show lamps/chest: <input type="checkbox" checked="true" id="showLamps"></label>
+            <label>Show husk miners: <input type="checkbox" checked="true" id="showEnemies"></label>
+            <label>Show crystallized husks: <input type="checkbox" checked="true" id="showBeam"></label>
+            <label>Show chandelier: <input type="checkbox" checked="true" id="showChandelier"></label>
+            <label>Show Seer: <input type="checkbox" checked="true" id="showSeer"></label>
+        </div>
+        <br>
+        <br>
+        <div>
+            <div>Not on the map:</div>
+            <div id="rest">
+            </div>
+        </div>
+        <br>
+
         <div style="padding: 30">
-            <div style="position: relative;">
+            <div style="position: relative; transform: scale(0.7);">
                 <img src="./map.png" style="position: absolute;" class="bg">
                 <div id="root" style="position: relative; left: 1000px; top: 700px">
                 </div>
             </div>
+        </div>
+
+        <div id="overlay" class="overlay">
+            <span>Drop your file here</span>
         </div>
     </body>
 </html>

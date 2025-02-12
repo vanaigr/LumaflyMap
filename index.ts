@@ -6,6 +6,7 @@ console.log(list, positions)
 let minX = Infinity, minY = Infinity
 let maxX = -Infinity, maxY = -Infinity
 
+/*
 for(const sceneName in list) {
     const scenePosOnMap = positions.mapScenes[sceneName]
     if(scenePosOnMap == null) {
@@ -19,29 +20,140 @@ for(const sceneName in list) {
     minY = Math.min(minY, scenePosOnMap.origin.y - scenePosOnMap.size.y * 0.5)
     maxY = Math.max(maxY, scenePosOnMap.origin.y + scenePosOnMap.size.y * 0.5)
 }
+*/
 
-for(const sceneName in list) {
-    const objs = list[sceneName]
-    const scenePosOnMap = positions.mapScenes[sceneName]
-    if(scenePosOnMap == null) continue
+const seerScene = "RestingGrounds_07";
+const seerPath = "/Dream Moth/Dream Dialogue";
 
-    const objsInWorld = positions.objs[sceneName]
-    const sceneWorldBounds = objsInWorld.sceneBounds
-    for(const path in objsInWorld.positions) {
-        const obj = objsInWorld.positions[path]
+let currentItems = {}
 
-        const el = document.createElement('div')
-        el.append(document.createElement('div'))
-        el.classList.add('marker')
 
-        el.style.left = ((scenePosOnMap.origin.x - scenePosOnMap.size.x * 0.5)
-            + (obj.x / sceneWorldBounds.size.x) * scenePosOnMap.size.x) * 30 + 'px'
+function refresh() {
+    console.log('refreshing')
 
-        el.style.top = -((scenePosOnMap.origin.y - scenePosOnMap.size.y * 0.5)
-            + (obj.y / sceneWorldBounds.size.y) * scenePosOnMap.size.y) * 30 + 'px'
+    window.root.innerHTML = ''
 
-        window.root.append(el)
+    const freed = window.showFreed?.checked
+    const rest = window.showRest?.checked
+    const lamps = window.showLamps?.checked
+    const enemies = window.showEnemies?.checked
+    const beam = window.showBeam?.checked
+    const chandelier = window.showChandelier?.checked
+    const seer = window.showSeer?.checked
+
+    window.rest.innerHTML = ''
+
+    for(const sceneName in positions.objs) {
+        const objs = list[sceneName] ?? {}
+
+        const scenePosOnMap = positions.mapScenes[sceneName]
+        const done = currentItems?.[sceneName] ?? {}
+
+        let sceneRest = null
+
+        const objsInWorld = positions.objs[sceneName]
+        const sceneWorldBounds = objsInWorld.sceneBounds
+        for(const path in objsInWorld.positions) {
+            if(done[path] && !freed) continue
+            if(!done[path] && !rest) continue
+
+            if(!lamps && (objs.lamps?.[path] || objs.chests?.[path])) continue
+            if(!enemies && objs.enemies?.[path]) continue
+            if(!beam && objs.beamMiners?.[path]) continue
+            if(!chandelier && (objs.chandelier?.[path] || objs.lampsOnWalls?.[path])) continue
+            if(!seer && (sceneName === seerScene && path === seerPath)) continue
+
+            const obj = objsInWorld.positions[path]
+
+            if(scenePosOnMap == null) {
+                if(!sceneRest) {
+                    const cont = document.createElement('details')
+                    cont.classList.add('restScene')
+                    const title = document.createElement('summary')
+                    title.append(document.createTextNode('Scene ' + sceneName))
+                    cont.append(title)
+                    sceneRest = document.createElement('div')
+                    cont.append(sceneRest)
+                    window.rest.append(cont)
+                }
+
+                const el = document.createElement('div')
+                el.append(document.createTextNode(path))
+
+                sceneRest.append(el)
+            }
+            else {
+                const el = document.createElement('div')
+                el.append(document.createElement('div'))
+                el.classList.add('marker')
+
+                el.style.left = ((scenePosOnMap.origin.x - scenePosOnMap.size.x * 0.5)
+                    + (obj.x / sceneWorldBounds.size.x) * scenePosOnMap.size.x) * 30 + 'px'
+
+                el.style.top = -((scenePosOnMap.origin.y - scenePosOnMap.size.y * 0.5)
+                    + (obj.y / sceneWorldBounds.size.y) * scenePosOnMap.size.y) * 30 + 'px'
+
+                window.root.append(el)
+            }
+        }
     }
+
+    console.log('done')
 }
 
-console.log('done')
+refresh()
+
+const controls = [
+    window.showFreed,
+    window.showRest,
+    window.showLamps,
+    window.showEnemies,
+    window.showBeam,
+    window.showChandelier,
+    window.showSeer,
+]
+controls.forEach(it => it?.addEventListener('change', () => refresh()))
+
+function showOverlay() {
+    window.overlay.style.visibility = 'visible'
+    window.overlay.style.opacity = '1'
+}
+function hideOverlay() {
+    window.overlay.style.visibility = ''
+    window.overlay.style.opacity = ''
+}
+
+let lastTarget
+window.addEventListener("dragenter", function(event) {
+    event.preventDefault()
+    lastTarget = event.target
+    showOverlay()
+})
+
+window.addEventListener('dragleave', function(event) {
+    event.preventDefault()
+    if(event.target === lastTarget || event.target === document) hideOverlay()
+})
+
+window.addEventListener("dragover", function (e) { e.preventDefault(); });
+
+window.addEventListener('drop', function(ev) {
+    ev.preventDefault();
+    hideOverlay()
+    loadFromListFiles(ev.dataTransfer.files)
+})
+
+window.input.addEventListener('change', it => loadFromListFiles(it.target.files))
+
+async function loadFromListFiles(files) {
+    currentItems = {}
+    const file = files[0]
+    const data = JSON.parse(await file.text())
+    const items = data.modData.LumaflyKnight.items2
+    for(const sk in items) {
+        const res = {}
+        items[sk].forEach(it => res[it] = true)
+        currentItems[sk] = res
+    }
+    refresh()
+}
