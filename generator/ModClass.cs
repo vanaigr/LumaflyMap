@@ -197,6 +197,17 @@ namespace LumaflyMap {
                 LogError(e);
             }
 
+            if(!allItems.ContainsKey(seerScene)) {
+                allItems.Add(seerScene, new SceneObjects {
+                    lamps = new  Dictionary<string, LampData>(), 
+                    enemies = new  Dictionary<string, EnemyData>(), 
+                    beamMiners = new  Dictionary<string, EnemyData>(), 
+                    chests = new  Dictionary<string, SpecialData>(), 
+                    chandeliers = new  Dictionary<string, SpecialData>(), 
+                    lampsOnWalls = new  Dictionary<string, LampData>(), 
+                });
+            }
+
             var ii = 0;
             foreach(var pair in allItems) {
                 Log("Processing scene " + pair.Key + " (" + (ii + 1) + " of " + allItems.Count + ")");
