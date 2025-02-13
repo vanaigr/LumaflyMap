@@ -109,11 +109,11 @@ function refresh() {
                 el.append(document.createElement('div'))
                 el.classList.add('marker')
 
-                el.style.left = ((scenePosOnMap.origin.x - scenePosOnMap.size.x * 0.5)
-                    + (obj.x / sceneWorldBounds.size.x) * scenePosOnMap.size.x) * 30 + 'px'
+                const width = scenePosOnMap.max.x - scenePosOnMap.min.x
+                const height = scenePosOnMap.max.y - scenePosOnMap.min.y
 
-                el.style.top = -((scenePosOnMap.origin.y - scenePosOnMap.size.y * 0.5)
-                    + (obj.y / sceneWorldBounds.size.y) * scenePosOnMap.size.y) * 30 + 'px'
+                el.style.left = (scenePosOnMap.min.x + (obj.x / sceneWorldBounds.size.x) * width) * 30 + 'px'
+                el.style.top = -(scenePosOnMap.min.y + (obj.y / sceneWorldBounds.size.y) * height) * 30 + 'px'
 
                 window.root.append(el)
             }
